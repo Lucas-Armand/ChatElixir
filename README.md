@@ -67,7 +67,38 @@ end
 
 ```
 
+Nesse caso "home_page.ex" faz o papel de controler associado ao acesso á raiz do aplicativo. O código gerencia o que acontece com ocorre um GET e um POST, o que fazer em caso de erro e quasi são as informações que o template vai receber:
 
+```
+#lib/my_chat/www/home_page.ex
+
+defmodule MyChat.WWW.HomePage do
+  use Raxx.Server
+  use MyChat.WWW.Layout, arguments: [:title]
+
+  @impl Raxx.Server
+  def handle_request(_request = %{method: :GET}, _state) do
+    title = "Raxx.Kit"
+
+    response(:ok)
+    |> render(title)
+  end
+
+  def handle_request(request = %{method: :POST}, _state) do
+    case URI.decode_query(request.body) do
+      %{"name" => name} ->
+        greeting = "Hello, #{name}!"
+
+        response(:ok)
+        |> render(greeting)
+      _ ->
+        response(:bad_request)
+        |> render("Bad Request")
+    end
+  end
+end
+
+```
 
 
 .
