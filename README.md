@@ -16,13 +16,56 @@ Se tudo deu certo (caso não veja a [documentação](https://hexdocs.pm/raxx/rea
 cd my_chat
 iex -S mix
 ```
-O resultado é a aplicação padrão do Raxx.kit:
+O resultado é a aplicação padrão do Raxx.kit pode ser acessado em http://localhost:8080/:
 
 ![resultado 1](https://github.com/Lucas-Armand/ChatScalable/blob/master/img/resultado_raxxkit_app.png)
 
 ## Analisando o aplicativo Elixir:
 
 Mesmo que não seja o foco desse trabalho discutir as basses de como funciona uma aplicação web de forma geral e como esses modelo aparecem dentro da linguagem em questão (até porque já existe muito material sobre isso), acredito que vale a pena explorar rápidamente essa aplicação padrão antes de altera-la.
+
+Quando Raxx.kit inicia seu nomo aplicativo ele cria um diretório para o projeto. A seguir destaco as parte principal para nossa análise dessa estrutura:
+```
+├── _build
+├── config
+├── deps
+├── lib
+│   └── my_chat.ex
+│   └── my_chat
+│   │   └── application.ex  
+│   │   └── public  
+│   │   └── www.ex (*)
+│   │   └── www
+│   │   │   └── home_page.ex  (*)
+│   │   │   └── home_page.html.eex  (*)
+│   │   │   └── layout.ex  
+│   │   │   └── layout.html.eex  
+│   │   │   └── not_found_page.ex  
+│   │   │   └── not_found_page.html.eex   
+├── priv
+├── test
+```
+
+Então, "www.ex" é o router do aplicativo. Nele é definido a porta de acesso do servidor, qual função chamar para cada acesso de url (no caso de um acesso em '/' á função 'MyChat.WWW.HomePage' será chamada e, para qualquer outro acesso, a função 'MyChat.WWW.NotFoundPage'), alem de importar alguns recursos externos.
+
+```
+#lib/my_chat/www.ex
+  
+defmodule MyChat.WWW do
+  use Ace.HTTP.Service, [port: 8080, cleartext: true]
+  
+  use Raxx.Router, [
+    {%{path: []}, MyChat.WWW.HomePage},
+    {_, MyChat.WWW.NotFoundPage}
+  ]
+  
+  @external_resource "lib/my_chat/public/main.css"
+  @external_resource "lib/my_chat/public/main.js"
+  use Raxx.Static, "./public"
+  use Raxx.Logger, level: :info
+end                         
+
+```
 
 
 
