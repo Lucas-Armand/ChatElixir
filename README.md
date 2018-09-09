@@ -1,6 +1,42 @@
 # ChatScalable
 Objetivo dese projeto é criar um serviço de chat cloud native, capaz de escalar horizontalmente e que possa rodar de maneira única em mais de um servidor. Um requisito é que o servidor seja feitos em Elixir. Como esse projeto será o meu primeiro projeto em Elixir, tentarei montar esse documente em um formato passo-a-passo e construir uma lista de links relevaantes para usar como referencia em projetos futuros. Esse trabalho também será uma resposta a um desafio então tentarei realiza-lo numa design sprint de quatro dias.
 
+# Criando seu primeiro Chat no Elixir:
+
+Usaremos o Raxx.Kit para desenvolver o nosso chat. Para iniciar um novo app basta fazer:
+
+```
+mix archive.install hex raxx_kit
+mix raxx.kit my_chat
+```
+
+Se tudo deu certo (caso não veja a [documentação](https://hexdocs.pm/raxx/readme.html)), você já tem um app web. Para acessa-lo basta seguir as orientações inciais:
+
+```
+cd my_chat
+iex -S mix
+```
+O resultado é a aplicação padrão do Raxx.kit:
+
+![resultado 1](https://github.com/Lucas-Armand/ChatScalable/blob/master/img/resultado_raxxkit_app.png)
+
+## Analisando o aplicativo Elixir:
+
+Mesmo que não seja o foco desse trabalho discutir as basses de como funciona uma aplicação web de forma geral e como esses modelo aparecem dentro da linguagem em questão (até porque já existe muito material sobre isso), acredito que vale a pena explorar rápidamente essa aplicação padrão antes de altera-la.
+
+
+
+
+.
+
+.
+
+.
+
+.
+
+.
+
 # Testando o projeto: (ATÉ 07/11)
 
 Para facilitar a visualização do projeto e os testes futuros eu coloquei todo o código para rodar em um repositório em uma máquina virtual. 
