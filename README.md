@@ -234,6 +234,34 @@ defmodule MyChat.WWW.Publish do
 end
 ```
 
+Esse método recebe as informações "postadadas" pela pagina e limpa os dados do request para enviar somente a "messagem". Ainda vamos criar esse MyChat.publish.
+
+
+```elixir
+#lib/my_chat/www/listen.ex
+
+defmodule MyChat.WWW.Listen do
+  use Raxx.Server
+  alias ServerSentEvent, as: SSE
+
+  @impl Raxx.Server
+  def handle_request(_request, state) do
+    {:ok, _} = MyChat.listen() # 1.
+
+    response = response(:ok)
+    |> set_header("content-type", SSE.mime_type())
+    |> set_body(true) # 2.
+
+    {[response], state} # 3.
+  end
+
+  @impl Raxx.Server
+  def handle_info({:mychat, message}, state) do
+    event = SSE.serialize(message)
+    {[Raxx.data(event)], state} # 4.
+  end
+end
+```
 
 .
 
