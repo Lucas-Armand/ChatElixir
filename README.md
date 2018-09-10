@@ -46,7 +46,7 @@ Quando Raxx.kit inicia seu nomo aplicativo ele cria um diretório para o projeto
 ├── test
 ```
 
-Então, "www.ex" é o router do aplicativo. Nele é definido a porta de acesso do servidor, qual função chamar para cada acesso de url (no caso de um acesso em '/' á função 'MyChat.WWW.HomePage' será chamada e, para qualquer outro acesso, a função 'MyChat.WWW.NotFoundPage'), alem de importar alguns recursos externos.
+Então, "www.ex" é o **router** do aplicativo. Nele é definido a porta de acesso do servidor, qual função chamar para cada acesso de url (no caso de um acesso em '/' á função 'MyChat.WWW.HomePage' será chamada e, para qualquer outro acesso, a função 'MyChat.WWW.NotFoundPage'), alem de importar alguns recursos externos.
 
 ```
 #lib/my_chat/www.ex
@@ -67,9 +67,9 @@ end
 
 ```
 
-Nesse caso "home_page.ex" faz o papel de controler associado ao acesso á raiz do aplicativo. O código gerencia o que acontece com ocorre um GET e um POST, o que fazer em caso de erro e quasi são as informações que o template vai receber:
+Nesse caso "home_page.ex" faz o papel de **controler** associado ao acesso á raiz do aplicativo. O código gerencia o que acontece com ocorre um GET e um POST, o que fazer em caso de erro e quasi são as informações que o template vai receber:
 
-```
+```elixir
 #lib/my_chat/www/home_page.ex
 
 defmodule MyChat.WWW.HomePage do
@@ -100,6 +100,33 @@ end
 
 ```
 
+
+```html
+<main class="centered">
+  <section class="accent">
+    <h1><%%= title %></h1>
+    <form action="/" method="post">
+      <label>
+        <span>tell us your name</span>
+        <input type="text" name="name" value="" autofocus>
+      </label>
+      <button type="submit">Submit</button>
+    </form>
+    <h2>Find out more</h2>
+    <nav>
+      <a href="https://github.com/CrowdHailer/raxx">SOURCE CODE</a>
+      <a href="https://elixir-lang.slack.com/messages/C56H3TBH8/">CHAT</a>
+    </nav>
+    <%%= javascript_variables title: title %>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        app.show(title)
+      })
+    </script>
+  </section>
+</main>
+
+```
 
 .
 
