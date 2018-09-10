@@ -67,7 +67,7 @@ end
 
 ```
 
-Nesse caso "home_page.ex" faz o papel de **controler** associado ao acesso á raiz do aplicativo. O código gerencia o que acontece com ocorre um GET e um POST, o que fazer em caso de erro e quasi são as informações que o template vai receber:
+Nesse caso "home_page.ex" faz o papel de **view** associado ao acesso á pagina da aplicação. O código gerencia o que acontece com ocorre um GET e um POST, o que fazer em caso de erro e quaiS são as informações que o template vai receber:
 
 ```elixir
 #lib/my_chat/www/home_page.ex
@@ -100,7 +100,7 @@ end
 
 ```
 
-Por fim, temos o arquvio "home_page.html.eex" que é o **template**. Aqui podemos ver aonde "title" (que é introduzido no código do controler) é referenciado. Esse arquivo html, junto aos arquivos em "/public" compõem o frontend da aplicação.
+Por fim, temos o arquvio "home_page.html.eex" que é o **template**. Aqui podemos ver aonde "title" (que é introduzido no código da view) é referenciado. Esse arquivo html, junto aos arquivos em "/public" compõem o frontend da aplicação.
 
 
 ```html
@@ -153,7 +153,7 @@ defmodule MyChat.WWW do
 end
 ```
 
-Agora devemos criar os controlers para realizar adicionar novas funcionalidades a aplicação. Incialmente faremos uma função para lidar com um request inicial. A informação denomida "node", que é o ID do nó que está executando a tarefa, será importante quando, mais a frente, tivermos multiplos node executando o código em paralelo, passando essa informação para o template poderemo saber em que node a aplicação está rodando.
+Agora devemos criar as views para realizar adicionar novas funcionalidades a aplicação. Incialmente faremos uma função para lidar com um request inicial. A informação denomida "node", que é o ID do nó que está executando a tarefa, será importante quando, mais a frente, tivermos multiplos node executando o código em paralelo, passando essa informação para o template poderemo saber em que node a aplicação está rodando.
 
 ```elixir
 #lib/my_chat/www/home_page.ex
