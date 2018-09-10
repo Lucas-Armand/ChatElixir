@@ -189,6 +189,7 @@ iframe {
   border: none;
 }
 ```
+O resultado dessa alteração será algo como:
 
 ![nonode print](https://github.com/Lucas-Armand/ChatScalable/blob/master/img/nonode.png)
 
