@@ -133,7 +133,27 @@ Por fim, temos o arquvio "home_page.html.eex" que é o **template**. Aqui podemo
 ```
 ## Altarando o aplicativo Elixir para construir um Chat:
 
-Dai, podemo começar fazendo uma alteração no controler. Incialmente faremos uma função para lidar com um request qualquer e passar a informação denomida "node", que é o ID do nó que está executando a tarefa. Isso será importante quando, mais a frente, tivermos multiplos node, podermos verificar aonde a aplicação está rodando.
+Dai, podemo começar fazendo uma alteração no router. No caso vamos manter o acesso em "/" á função "MyChat.WWW.HomePage" (que será alterada a frente), para um POST em "publish" será chamada "MyChat.WWW.Publish", para um acesso em "listen" será chamada "MyChat.WWW.Listen" e qualquer outro acesso a função "MyChat.WWW.NotFoundPage". Além de importar alguns recursos externos.
+
+```elixir
+defmodule MyChat.WWW do
+  use Ace.HTTP.Service, [port: 8080, cleartext: true]
+  
+  use Raxx.Router, [
+    {%{method: :GET, path: []}, MyChat.WWW.HomePage},
+    {%{method: :POST, path: ["publish"]}, MyChat.WWW.Publish},
+    {%{method: :GET, path: ["listen"]}, MyChat.WWW.Listen},
+    {_, MyChat.WWW.NotFoundPage}
+  ]
+
+  @external_resource "lib/my_chat/public/main.css"
+  @external_resource "lib/my_chat/public/main.js"
+  use Raxx.Static, "./public"
+  use Raxx.Logger, level: :info
+end
+```
+
+Agora devemos atualizar os controlers para realizar o que nós queremos. Incialmente faremos uma função para lidar com um request qualquer e passar a informação denomida "node", que é o ID do nó que está executando a tarefa. Isso será importante quando, mais a frente, tivermos multiplos node, podermos verificar aonde a aplicação está rodando.
 
 ```elixir
 #lib/my_chat/www/home_page.ex
@@ -152,6 +172,7 @@ defmodule MyChat.WWW.HomePage do
   end
 end
 ```
+
 Em seguida devemos mudar o frontend para se adequar aquilo que queremos.
 
 ```html
@@ -193,6 +214,142 @@ O resultado dessa alteração será algo como:
 
 ![nonode print](https://github.com/Lucas-Armand/ChatScalable/blob/master/img/nonode.png)
 
+Nesse ponto já temos o básico do nosso aplicativo funcionando porém ainda falta algumas coisas 
+.
+
+.
+
+.
+
+.
+
+.
+.
+
+.
+
+.
+
+.
+
+.
+.
+
+.
+
+.
+
+.
+
+.
+.
+
+.
+
+.
+
+.
+
+.
+.
+
+.
+
+.
+
+.
+
+.
+.
+
+.
+
+.
+
+.
+
+.
+.
+
+.
+
+.
+
+.
+
+.
+.
+
+.
+
+.
+
+.
+
+.
+.
+
+.
+
+.
+
+.
+
+.
+.
+
+.
+
+.
+
+.
+
+.
+.
+
+.
+
+.
+
+.
+
+.
+.
+
+.
+
+.
+
+.
+
+.
+.
+
+.
+
+.
+
+.
+
+.
+.
+
+.
+
+.
+
+.
+
+.
+.
+
+.
+
+.
+
+.
+
+.
 .
 
 .
