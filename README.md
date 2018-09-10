@@ -48,7 +48,7 @@ Quando Raxx.kit inicia seu nomo aplicativo ele cria um diretório para o projeto
 
 Então, "www.ex" é o **router** do aplicativo. Nele é definido a porta de acesso do servidor, qual função chamar para cada acesso de url (no caso de um acesso em '/' á função 'MyChat.WWW.HomePage' será chamada e, para qualquer outro acesso, a função 'MyChat.WWW.NotFoundPage'), alem de importar alguns recursos externos.
 
-````elixir
+```elixir
 #lib/my_chat/www.ex
   
 defmodule MyChat.WWW do
