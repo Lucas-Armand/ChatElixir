@@ -100,11 +100,12 @@ end
 
 ```
 
-Por fim, temos o arquvio "home_page.html.eex" que é o template. Aqui podemos ver aonde "title" (que é introduzido no código do controler) é referenciado. Esse arquivo html, junto aos arquivos em "/public" compõem o frontend da aplicação.
+Por fim, temos o arquvio "home_page.html.eex" que é o **template**. Aqui podemos ver aonde "title" (que é introduzido no código do controler) é referenciado. Esse arquivo html, junto aos arquivos em "/public" compõem o frontend da aplicação.
 
 
 ```html
 #lib/my_chat/www/home_page.html.eex
+
 <main class="centered">
   <section class="accent">
     <h1><%%= title %></h1>
@@ -131,6 +132,65 @@ Por fim, temos o arquvio "home_page.html.eex" que é o template. Aqui podemos ve
 
 ```
 ## Altarando o aplicativo Elixir para construir um Chat:
+
+Dai, podemo começar fazendo uma alteração no controler. Incialmente faremos uma função para lidar com um request qualquer e passar a informação denomida "node", que é o ID do nó que está executando a tarefa. Isso será importante quando, mais a frente, tivermos multiplos node, podermos verificar aonde a aplicação está rodando.
+
+```elixir
+#lib/my_chat/www/home_page.ex
+
+defmodule MyChat.WWW.HomePage do
+  use Raxx.Server
+  use MyChat.WWW.Layout, arguments: [:node]
+
+
+  @impl Raxx.Server
+  def handle_request(_request, _state) do
+    node = Node.self()
+
+    response(:ok)
+    |> render(node)
+  end
+end
+```
+Em seguida devemos mudar o frontend para se adequar aquilo que queremos.
+
+```html
+#lib/my_chat/www/home_page.html.eex
+
+<main>
+  <h1>My First Chat</h1>
+  <h2>Node: <%= node %></h2>
+  <iframe name="myframe" width="0" height="0"></iframe>
+  <form action="/publish" method="post" target="myframe">
+    <input type="text" name="message">
+    <button type="submit">Publish</button>
+  </form>
+  <hr>
+  <h1>Messages</h1>
+  <ul id="messages"></ul>
+</main>
+```
+Aqui também é interessante alguma alteração no css:
+
+```css
+#lib/my_chat/www/public/main.css
+
+main {
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h1 {
+  text-align: center;
+}
+
+iframe {
+  border: none;
+}
+```
+
+![nonode print](https://github.com/Lucas-Armand/ChatScalable/blob/master/img/nonode.png)
 
 .
 
