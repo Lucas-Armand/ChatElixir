@@ -153,7 +153,7 @@ defmodule MyChat.WWW do
 end
 ```
 
-Agora devemos atualizar os controlers para realizar o que nós queremos. Incialmente faremos uma função para lidar com um request qualquer e passar a informação denomida "node", que é o ID do nó que está executando a tarefa. Isso será importante quando, mais a frente, tivermos multiplos node, podermos verificar aonde a aplicação está rodando.
+Agora devemos criar os controlers para realizar adicionar novas funcionalidades a aplicação. Incialmente faremos uma função para lidar com um request inicial. A informação denomida "node", que é o ID do nó que está executando a tarefa, será importante quando, mais a frente, tivermos multiplos node executando o código em paralelo, passando essa informação para o template poderemo saber em que node a aplicação está rodando.
 
 ```elixir
 #lib/my_chat/www/home_page.ex
@@ -173,7 +173,7 @@ defmodule MyChat.WWW.HomePage do
 end
 ```
 
-Em seguida devemos mudar o frontend para se adequar aquilo que queremos.
+Em seguida, podemos nos avançar,  e atualizar o frontend para se adequar aquilo a aplicação de um chat:
 
 ```html
 #lib/my_chat/www/home_page.html.eex
@@ -210,11 +210,31 @@ iframe {
   border: none;
 }
 ```
-O resultado dessa alteração será algo como:
+Se nesse ponto rodarmos o serviço (``` iex -S mix ```) já temos uma visualização de como será a aplicação:
 
 ![nonode print](https://github.com/Lucas-Armand/ChatScalable/blob/master/img/nonode.png)
 
-Nesse ponto já temos o básico do nosso aplicativo funcionando porém ainda falta algumas coisas 
+Agora devemos construir um metodo publisher e um listener:
+
+```elixir
+#lib/my_chat/www/publish.ex
+
+defmodule MyChat.WWW.Publish do
+  use Raxx.Server
+
+  @impl Raxx.Server
+  def handle_request(request, _state) do
+    "message=" <> message = request.body 
+     message = URI.decode_www_form(message) 
+
+    {:ok, _} = MyChat.publish(message) # 2.
+
+    redirect("/") # 3.
+  end
+end
+```
+
+
 .
 
 .
