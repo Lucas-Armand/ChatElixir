@@ -10,7 +10,7 @@ mix archive.install hex raxx_kit
 mix raxx.kit my_chat
 ```
 
-Se tudo deu certo (caso não veja a [documentação](https://hexdocs.pm/raxx/readme.html)), você já tem um app web. Para acessa-lo basta seguir as orientações inciais:
+Se tudo deu certo (caso não, veja a [documentação](https://hexdocs.pm/raxx/readme.html)), você já tem um app web. Para acessa-lo basta seguir as orientações inciais:
 
 ```
 cd my_chat
