@@ -223,7 +223,7 @@ end
 ```
 Em listen você tem duas ações. A primeira, handle_request, evoca MyChat.listen() (que iremos discutir a seguir) e retorna uma respota de "ok esta tudo funcionando". O segundo método "handle_info" é evocado toda vez que alguma mensagem é enviada. Ele serializa a mensagem e usa o Raxx.data para tornar essa informação disponibel para js (que atualizará as mensagens na tela). Esse método usa um biblioteca de serialização chamada "ServerSentEvent".
 
-Agora dando um pequeno passo atrás
+Agora, nos aprofundando no backend.
 
 Em seguida, podemos nos avançar,  e atualizar o frontend para se adequar aquilo a aplicação de um chat:
 
