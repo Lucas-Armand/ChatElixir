@@ -221,9 +221,33 @@ defmodule MyChat.WWW.Listen do
   end
 end
 ```
-Em listen você tem duas ações. A primeira, handle_request, evoca MyChat.listen() (que iremos discutir a seguir) e retorna uma respota de "ok esta tudo funcionando". O segundo método "handle_info" é evocado toda vez que alguma mensagem é enviada. Ele serializa a mensagem e usa o Raxx.data para tornar essa informação disponibel para js (que atualizará as mensagens na tela). Esse método usa um biblioteca de serialização chamada "ServerSentEvent".
+Em listen.ex você tem duas ações. A primeira, handle_request, evoca MyChat.listen() (que iremos discutir a seguir) e retorna uma respota de "ok esta tudo funcionando". O segundo método "handle_info" é evocado toda vez que alguma mensagem é enviada. Ele serializa a mensagem e usa o Raxx.data para tornar essa informação disponibel para js (que atualizará as mensagens na tela). Esse método usa um biblioteca de serialização chamada "ServerSentEvent".
 
-Agora, nos aprofundando no backend.
+Agora, nos aprofundando no backend, vamos fazer o **controler** da nossa aplicação.
+
+```elixir
+#lib/my_chat.ex
+defmodule MyChat do
+  @group :mychat
+
+  def publish(message) do
+    :ok = :pg2.create(@group)
+    for client <- :pg2.get_members(@group) do
+      send(client, {@group, message})
+    end
+
+    {:ok, message}
+  end
+
+  def listen() do
+    :ok = :pg2.create(@group)
+    :ok = :pg2.join(@group, self())
+    {:ok, @group}
+  end
+end
+```
+A idéia de separar a lógica da aplicação view (local aonde eu chamo outras funções do código e onde eu faço um processamento básico das informações de saida e entrada do template) do controler (processamento dos dados, lógica da aplicação, queries e filtros do banco de dados, etc...) é interessante, porque muitas vezes as funções criadas no controller podem ser aproveitadas em outras aplicaçãos. Nesse código tempo "MyChat.publish" e "MyChat.listen" (como prometido) e podemos perveber que a funcionalidade desses métodos é baseada em um biblioteca "pg2". A pg2 é um biblioteca do erlang (que pra ser sincero ainda não entendo muito bem), 
+
 
 Em seguida, podemos nos avançar,  e atualizar o frontend para se adequar aquilo a aplicação de um chat:
 
