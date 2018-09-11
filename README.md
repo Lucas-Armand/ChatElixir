@@ -173,6 +173,58 @@ defmodule MyChat.WWW.HomePage do
 end
 ```
 
+Agora devemos construir um metodo publisher e um listener:
+
+```elixir
+#lib/my_chat/www/publish.ex
+
+defmodule MyChat.WWW.Publish do
+  use Raxx.Server
+
+  @impl Raxx.Server
+  def handle_request(request, _state) do
+    "message=" <> message = request.body 
+     message = URI.decode_www_form(message) 
+
+    {:ok, _} = MyChat.publish(message) # 2.
+
+    redirect("/") # 3.
+  end
+end
+```
+
+Esse método recebe as informações "postadadas" pela pagina e limpa os dados do request para enviar somente a "messagem" para o backend. Mais a frente vamos criar esse MyChat.publish.
+
+
+```elixir
+#lib/my_chat/www/listen.ex
+
+defmodule MyChat.WWW.Listen do
+  use Raxx.Server
+  alias ServerSentEvent, as: SSE
+
+  @impl Raxx.Server
+  def handle_request(_request, state) do
+    {:ok, _} = MyChat.listen()
+
+    response = response(:ok)
+    |> set_header("content-type", SSE.mime_type())
+    |> set_body(true) 
+
+    {[response], state} 
+  end
+
+  @impl Raxx.Server
+  def handle_info({:mychat, message}, state) do
+    event = SSE.serialize(message)
+    {[Raxx.data(event)], state} 
+  end
+end
+```
+Em listen você tem duas ações. A primeira, handle_request, evoca MyChat.listen() (que iremos discutir a seguir) e retorna uma respota de "ok esta tudo funcionando". O segundo método "handle_info" é evocado toda vez que alguma mensagem é enviada. Ele serializa a mensagem e usa o Raxx.data para tornar essa informação disponibel para js (que atualizará as mensagens na tela). Esse método usa um biblioteca de serialização chamada "ServerSentEvent".
+
+Agora dando um pequeno passo atrás
+
 Em seguida, podemos nos avançar,  e atualizar o frontend para se adequar aquilo a aplicação de um chat:
 
 ```html
@@ -213,55 +265,6 @@ iframe {
 Se nesse ponto rodarmos o serviço (``` iex -S mix ```) já temos uma visualização de como será a aplicação:
 
 ![nonode print](https://github.com/Lucas-Armand/ChatScalable/blob/master/img/nonode.png)
-
-Agora devemos construir um metodo publisher e um listener:
-
-```elixir
-#lib/my_chat/www/publish.ex
-
-defmodule MyChat.WWW.Publish do
-  use Raxx.Server
-
-  @impl Raxx.Server
-  def handle_request(request, _state) do
-    "message=" <> message = request.body 
-     message = URI.decode_www_form(message) 
-
-    {:ok, _} = MyChat.publish(message) # 2.
-
-    redirect("/") # 3.
-  end
-end
-```
-
-Esse método recebe as informações "postadadas" pela pagina e limpa os dados do request para enviar somente a "messagem". Ainda vamos criar esse MyChat.publish.
-
-
-```elixir
-#lib/my_chat/www/listen.ex
-
-defmodule MyChat.WWW.Listen do
-  use Raxx.Server
-  alias ServerSentEvent, as: SSE
-
-  @impl Raxx.Server
-  def handle_request(_request, state) do
-    {:ok, _} = MyChat.listen() # 1.
-
-    response = response(:ok)
-    |> set_header("content-type", SSE.mime_type())
-    |> set_body(true) # 2.
-
-    {[response], state} # 3.
-  end
-
-  @impl Raxx.Server
-  def handle_info({:mychat, message}, state) do
-    event = SSE.serialize(message)
-    {[Raxx.data(event)], state} # 4.
-  end
-end
-```
 
 .
 
