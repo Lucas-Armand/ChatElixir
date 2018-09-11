@@ -246,8 +246,7 @@ defmodule MyChat do
   end
 end
 ```
-A idéia de separar a lógica da aplicação view (local aonde eu chamo outras funções do código e onde eu faço um processamento básico das informações de saida e entrada do template) do controler (processamento dos dados, lógica da aplicação, queries e filtros do banco de dados, etc...) é interessante, porque muitas vezes as funções criadas no controller podem ser aproveitadas em outras aplicaçãos. Nesse código tempo "MyChat.publish" e "MyChat.listen" (como prometido) e podemos perveber que a funcionalidade desses métodos é baseada em um biblioteca "pg2". A pg2 é um biblioteca do erlang (que pra ser sincero ainda não entendo muito bem), 
-
+A idéia de separar a lógica da aplicação view (local aonde eu chamo outras funções do código e onde eu faço um processamento básico das informações de saida e entrada do template) do controler (processamento dos dados, lógica da aplicação, queries e filtros do banco de dados, etc...) é interessante, porque muitas vezes as funções criadas no controller podem ser aproveitadas em outras aplicaçãos. Nesse código tempo "MyChat.publish" e "MyChat.listen" (como prometido) e podemos perveber que a funcionalidade desses métodos é baseada em um biblioteca "pg2". A pg2 é um biblioteca do erlang (que pra ser sincero ainda não entendo muito bem), mas, pelo que eu entendo, ela permite que você crie "nodes" que fiquem inscritos a um grupo, assim você pode mandar para eles mensagens que são recebidos como eventos. 
 
 Em seguida, podemos nos avançar,  e atualizar o frontend para se adequar aquilo a aplicação de um chat:
 
@@ -267,7 +266,7 @@ Em seguida, podemos nos avançar,  e atualizar o frontend para se adequar aquilo
   <ul id="messages"></ul>
 </main>
 ```
-Aqui também é interessante alguma alteração no css:
+Por fim algum css:
 
 ```css
 #lib/my_chat/www/public/main.css
@@ -286,7 +285,7 @@ iframe {
   border: none;
 }
 ```
-Se nesse ponto rodarmos o serviço (``` iex -S mix ```) já temos uma visualização de como será a aplicação:
+E agora, se rodarmos o serviço (``` iex -S mix ```) já temos a nossa nova aplicação. Podemos abri-la em multiplas abas o brownser para testar o recebimento de mensagem, mas a seguir discutiremos como rodar os nós no Docker:
 
 ![nonode print](https://github.com/Lucas-Armand/ChatScalable/blob/master/img/nonode.png)
 
