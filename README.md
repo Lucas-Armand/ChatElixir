@@ -285,9 +285,24 @@ iframe {
   border: none;
 }
 ```
-E agora, se rodarmos o serviço (``` iex -S mix ```) já temos a nossa nova aplicação. Podemos abri-la em multiplas abas o brownser para testar o recebimento de mensagem, mas a seguir discutiremos como rodar os nós no Docker:
+E agora, se rodarmos o serviço (``` iex -S mix ```) já temos a nossa nova aplicação. Podemos abri-la em multiplas abas o brownser para testar o recebimento de mensagem, mas a seguir discutiremos como rodar em multiplos nós:
 
 ![nonode print](https://github.com/Lucas-Armand/ChatScalable/blob/master/img/nonode.png)
+
+
+```
+# terminal 1
+$ PORT=8081 SECURE_PORT=8441 iex \
+  --name node1@127.0.0.1 \
+  --erl "-config sys.config" \
+  -S mix
+
+# terminal 2
+$ PORT=8082 SECURE_PORT=8442 iex \
+  --name node2@127.0.0.1 \
+  --erl "-config sys.config" \
+  -S mix
+```
 
 .
 
